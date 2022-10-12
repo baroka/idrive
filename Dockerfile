@@ -38,6 +38,7 @@ WORKDIR /work/IDriveForLinux/scripts
 
 # Give execution rights
 RUN chmod a+x *.pl
+RUN ./check_for_update.pl silent
 
 # Create the log file to be able to run tail
 RUN touch /var/log/idrive.log
