@@ -1,7 +1,10 @@
 # build:
 #  docker build -t baroka/idrive .
 
-FROM ubuntu:latest
+FROM ubuntu:22.04
+
+ARG TZ "America/Los_Angeles"
+ENV tz=$TZ
 
 RUN mkdir -p /home/backup
 
@@ -13,13 +16,15 @@ RUN chmod a+x entrypoint.sh
 
 # Install packages
 RUN apt-get update && apt-get -y install vim unzip curl libfile-spec-native-perl
-RUN apt-get update && apt-get -y install build-essential sqlite3 perl-doc libdbi-perl libdbd-sqlite3-perl
-RUN cpan install common::sense
-RUN cpan install Linux::Inotify2
+RUN apt-get update && apt-get -y install build-essential sqlite3 perl-doc libdbi-perl libdbd-sqlite3-perl liblinux-inotify2-perl
+RUN cpan App::cpanminus
+# RUN cpanm Log::Log4perl
+RUN cpanm common::sense
+#RUN cpanm --force Linux::Inotify2
 
 # Timezone (no prompt)
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tzdata
-RUN echo "Europe/Madrid" > /etc/timezone
+RUN echo $tz > /etc/timezone
 RUN rm -f /etc/localtime
 RUN dpkg-reconfigure -f noninteractive tzdata
 
