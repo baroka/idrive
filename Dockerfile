@@ -12,10 +12,11 @@ COPY entrypoint.sh .
 RUN chmod a+x entrypoint.sh
 
 # Install packages
-RUN apt-get update && apt-get install -y vim unzip curl libfile-spec-native-perl
-RUN apt-get update && apt-get install -y build-essential sqlite3 perl-doc libdbi-perl libdbd-sqlite3-perl
-RUN cpan install common::sense
-RUN cpan install Linux::Inotify2
+RUN apt-get update && apt-get install -y vim unzip curl libfile-spec-native-perl \
+    build-essential sqlite3 perl-doc libdbi-perl libdbd-sqlite3-perl && \
+    cpan install common::sense && \
+    cpan install Linux::Inotify2 && \
+    apt-get clean
 
 # Timezone (no prompt)
 ARG TZ "Europe/Madrid"
